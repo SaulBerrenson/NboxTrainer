@@ -6,8 +6,6 @@ Nbox Trainer is library-wrapper for easy creating trainer ml models of image cla
 * Microsoft.ML.ImageAnalytics [1.5.4]
 * Microsoft.ML.Vision [1.5.4]
 * SciSharp.TensorFlow.Redist-Windows-GPU [1.5.1]
-
-#### Requerments
 * CUDA 10.0;
 * Cudnn 7.6.4;
 
