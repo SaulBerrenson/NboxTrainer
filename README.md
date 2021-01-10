@@ -1,5 +1,11 @@
 # NBox Trainer
-Nbox Trainer is library-wrapper for easy creating trainer ml models of image classification with GPU acceleration.
+Nbox Trainer is library-wrapper for easy creating trainer ml models of image classification with GPU acceleration. Used ML.Net and Tensorflow
+
+#### Packages
+* Microsoft.ML [1.5.4]
+* Microsoft.ML.ImageAnalytics [1.5.4]
+* Microsoft.ML.Vision [1.5.4]
+* SciSharp.TensorFlow.Redist-Windows-GPU [1.5.1]
 
 #### Example struct dataset
 ```
