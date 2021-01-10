@@ -9,6 +9,10 @@ Nbox Trainer is library-wrapper for easy creating trainer ml models of image cla
 * CUDA 10.0;
 * Cudnn 7.6.4;
 
+###### Installing cuda and cudnn
+https://docs.microsoft.com/en-us/dotnet/machine-learning/how-to-guides/install-gpu-model-builder
+
+
 #### Example struct dataset
 ```
  +---flower_photos
