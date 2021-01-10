@@ -1,6 +1,6 @@
 ﻿namespace NboxTrainer.Services
 {
-    public class ServiceStateML
+    public class ServiceStateML : IServiceState<StateML>
     {
         public ServiceStateML()
         {
