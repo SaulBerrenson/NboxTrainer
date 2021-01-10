@@ -10,9 +10,10 @@ using static Microsoft.ML.Vision.ImageClassificationTrainer;
 
 namespace NboxTrainer.Services
 {
-    public class TrainerService
+    public class TrainerService : ITrainer
     {
 
+        #region private
         private string dir_dataset;
         private Dictionary<string,int> list_categories = new Dictionary<string, int>();
         private IDataView _preProcessedData;
@@ -25,9 +26,9 @@ namespace NboxTrainer.Services
         private string project_directory;
         private string project_name;
         private ITransformer _trainedModel;
-
-        public readonly ServiceStateML _serviceStateMl = new ServiceStateML();
-
+        private readonly ServiceStateML _serviceStateMl = new ServiceStateML();
+        #endregion
+        #region events
 
         public delegate void OnServiceState(StateML state);
         public event OnServiceState onStateChanged;
@@ -36,10 +37,9 @@ namespace NboxTrainer.Services
             ImageClassificationMetrics metrics);
         public event OnTrainMetrics onTrainMetrics;
 
+        #endregion
 
-
-
-
+        #region contructor
 
         public TrainerService(string projectDirectory, string projectName)
         {
@@ -74,7 +74,11 @@ namespace NboxTrainer.Services
            
         }
 
-       
+        #endregion
+
+
+
+        #region prepare dataset
 
         private void splitDatasets()
         {
@@ -142,9 +146,13 @@ namespace NboxTrainer.Services
             return true;
         }
 
+        #endregion
+
         ///////////////////////////////
         /// TrainOptions
         //////////////////////////////
+
+        #region fluent builder settings
 
         public TrainerService setPathToDataset(string dir)
         {
@@ -164,8 +172,8 @@ namespace NboxTrainer.Services
 
         public TrainerService setOptions(Options options)
         {
-             _trainOptions = options;
-             return this;
+            _trainOptions = options;
+            return this;
         }
         public TrainerService setCriteriaEarlyStopping(EarlyStopping criteria = null)
         {
@@ -220,37 +228,40 @@ namespace NboxTrainer.Services
             return this;
         }
 
+        #endregion
+
         ///////////////////////////////
         /// Global Methods
         //////////////////////////////
 
 
+        #region main methods
 
         public async Task<bool> Train()
         { 
-           bool result = false;
+            bool result = false;
 
-           await loadDataset();
-           splitDatasets();
+            await loadDataset();
+            splitDatasets();
 
             await AsyncIO.StartTask(() =>
-           {
-               try
-               {
-                  var pipeline = _mlContext.MulticlassClassification.Trainers.ImageClassification(_trainOptions)
-                       .Append(_mlContext.Transforms.Conversion.MapKeyToValue(
-                           outputColumnName: "PredictedLabel",
-                           inputColumnName: "PredictedLabel"));
-                  _trainedModel = pipeline.Fit(_trainSet);
-                  result = true;
+            {
+                try
+                {
+                    var pipeline = _mlContext.MulticlassClassification.Trainers.ImageClassification(_trainOptions)
+                        .Append(_mlContext.Transforms.Conversion.MapKeyToValue(
+                            outputColumnName: "PredictedLabel",
+                            inputColumnName: "PredictedLabel"));
+                    _trainedModel = pipeline.Fit(_trainSet);
+                    result = true;
                   
-               }
-               catch (Exception e)
-               {
-                   result = false;
-               }
+                }
+                catch (Exception e)
+                {
+                    result = false;
+                }
                
-           });
+            });
 
             _serviceStateMl.setState(StateML.Done);
             return result;
@@ -272,9 +283,11 @@ namespace NboxTrainer.Services
 
         public async Task SaveModel()
         {
-           await AsyncIO.StartTask(() => _mlContext.Model.Save(_trainedModel, _trainSet.Schema,
+            await AsyncIO.StartTask(() => _mlContext.Model.Save(_trainedModel, _trainSet.Schema,
                 Path.Combine(AppContext.BaseDirectory, $"{DateTime.Now:yy-MM-dd}_{project_name}.zip")));
         }
+
+        #endregion
 
     }
 }
