@@ -1,5 +1,5 @@
 # NBox Trainer
-Nbox Trainer is library-wrapper for easy creating trainer ml models of image classification with GPU acceleration. Used ML.Net and Tensorflow
+Nbox Trainer is library-wrapper for easy creating trainer ml models of image classification with GPU acceleration. Also you can test prediction with prediction service.
 
 #### Packages
 * Microsoft.ML [1.5.4]
@@ -22,7 +22,7 @@ Nbox Trainer is library-wrapper for easy creating trainer ml models of image cla
 
 All top subfolders of dataset catalog will use as label of categories
 
-#### Example using with fluent builder
+#### Example using trainer with fluent builder
 ```c#
  string dirDatasets = "D:\\Downloads\\flower_photos\\";
 
@@ -45,3 +45,27 @@ All top subfolders of dataset catalog will use as label of categories
             var _metrics = await trainer.GetMetrics();
             await trainer.SaveModel();
 ```
+
+
+#### Example using prediction service with fluent builder
+```c#
+   PredictorService service = new PredictorService("D:\\flower_photos\\test_fraction\\")
+                        .setPathToModel("D:\\21-01-10_flower.zip");
+            service.onPrediction += prediction => Console.WriteLine(prediction);
+            await service.Process();
+            
+/* output log with event onPrediction
+*
+*File:   100080576_f52e8ee070_n.jpg |  Predicted: daisy  |    Accuracy: 0,9956813
+*File:   102841525_bd6628ae3c.jpg   |  Predicted: daisy  |    Accuracy: 0,99993706
+*File:   105806915_a9c13e2106_n.jpg |  Predicted: daisy  |    Accuracy: 0,99083275
+*File:   107592979_aaa9cdfe78_m.jpg |  Predicted: daisy  |    Accuracy: 0,9820342
+*File:   113902743_8f537f769b_n.jpg |  Predicted: tulips |    Accuracy: 0,9946406
+*File:   113960470_38fab8f2fb_m.jpg |  Predicted: tulips |    Accuracy: 0,9788831
+*File:   116343334_9cb4acdc57_n.jpg |  Predicted: tulips |    Accuracy: 0,99646
+*File:   122450705_9885fff3c4_n.jpg |  Predicted: tulips |    Accuracy: 0,9952939
+*/
+```
+
+
+
