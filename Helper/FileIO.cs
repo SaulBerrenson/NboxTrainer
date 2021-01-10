@@ -10,7 +10,7 @@ namespace NboxTrainer.Helper
     internal static class FileIO
     {
         public static bool dirExist(string dir) => Directory.Exists(dir);
-
+        public static bool fileExist(string dir) => File.Exists(dir);
         public static IEnumerable<string> getListNamesDirectiories(string dir, SearchOption option = SearchOption.TopDirectoryOnly)
         {
             try
@@ -77,6 +77,21 @@ namespace NboxTrainer.Helper
                 }
 
                 yield return new ImageData(file, label);
+            }
+        }
+
+        public static IEnumerable<ModelInput> loadImagesFromDirectory(string folder)
+        {
+            var files = Directory.GetFiles(folder, "*",
+                searchOption: SearchOption.AllDirectories);
+
+            foreach (var file in files)
+            {
+                if ((Path.GetExtension(file) != ".jpg") && (Path.GetExtension(file) != ".png"))
+                    continue;
+
+                var label = Path.GetFileName(file);
+                yield return new ModelInput(){ImagePath = file};
             }
         }
 
