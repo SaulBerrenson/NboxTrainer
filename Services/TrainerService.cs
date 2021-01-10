@@ -10,6 +10,9 @@ using static Microsoft.ML.Vision.ImageClassificationTrainer;
 
 namespace NboxTrainer.Services
 {
+    /// <summary>
+    /// Class for creating pipeline image classification
+    /// </summary>
     public class TrainerService : ITrainer
     {
 
