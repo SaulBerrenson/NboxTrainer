@@ -7,6 +7,10 @@ Nbox Trainer is library-wrapper for easy creating trainer ml models of image cla
 * Microsoft.ML.Vision [1.5.4]
 * SciSharp.TensorFlow.Redist-Windows-GPU [1.5.1]
 
+#### Requerments
+* CUDA 10.0;
+* Cudnn 7.6.4;
+
 #### Example struct dataset
 ```
  +---flower_photos
@@ -19,10 +23,6 @@ Nbox Trainer is library-wrapper for easy creating trainer ml models of image cla
 ```
 
 All top subfolders of dataset catalog will use as label of categories
-
-#### Requerments
-* CUDA 10.0;
-* Cudnn 7.6.4;
 
 #### Example using with fluent builder
 ```c#
